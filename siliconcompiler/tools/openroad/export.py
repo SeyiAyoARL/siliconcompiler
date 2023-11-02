@@ -53,7 +53,10 @@ def setup(chip):
                  ",".join(['pdk', pdk, 'pexmodel', 'openroad-openrcx', stackup, corner]),
                  step=step, index=index)
 
-    chip.add('tool', tool, 'task', task, 'input', design + '.def', step=step, index=index)
+    if not chip.valid('input', 'layout', 'def') or \
+       not chip.get('input', 'layout', 'def', step=step, index=index):
+        chip.add('tool', tool, 'task', task, 'input', design + '.def',
+                 step=step, index=index)
 
     # Add outputs LEF
     chip.add('tool', tool, 'task', task, 'output', design + '.lef', step=step, index=index)
